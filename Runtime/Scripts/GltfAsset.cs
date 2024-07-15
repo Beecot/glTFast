@@ -118,12 +118,12 @@ namespace GLTFast
                 try
                 {
                     // Automatic load on startup
-                    await Load(FullUrl);
+                    Error = !(await Load(FullUrl));
                 }
                 catch (NullReferenceException e)
                 {
                     Error = true;
-                    ErrorMessage = "File could not be loaded";
+                    ErrorMessage = e.Message;
                 }
             }
         }

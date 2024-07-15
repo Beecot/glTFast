@@ -104,8 +104,15 @@ namespace GLTFast
         {
             if (loadOnStartup && !string.IsNullOrEmpty(url))
             {
-                // Automatic load on startup
-                await Load(FullUrl);
+                try
+                {
+                    // Automatic load on startup
+                    await Load(FullUrl);
+                }
+                catch (NullReferenceException e)
+                {
+                    Debug.LogError("Cannot load file " + url);
+                }
             }
         }
 

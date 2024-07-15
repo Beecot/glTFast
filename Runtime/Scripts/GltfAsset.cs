@@ -62,6 +62,16 @@ namespace GLTFast
             set => instantiationSettings = value;
         }
 
+        /// <summary>
+        /// If true, there was an error during load of the glb.
+        /// </summary
+        public bool Error { get; private set; }
+
+        /// <summary>
+        /// If <see cref="Error"/> is true, this can contain an additional error message.
+        /// </summary
+        public string ErrorMessage { get; private set; }
+
         [SerializeField]
         [Tooltip("URL to load the glTF from. Loading local file paths works by prefixing them with \"file://\"")]
         string url;
@@ -112,6 +122,8 @@ namespace GLTFast
                 }
                 catch (NullReferenceException e)
                 {
+                    Error = true;
+                    ErrorMessage = "File could not be loaded";
                     Debug.LogError("Cannot load file " + url);
                 }
             }

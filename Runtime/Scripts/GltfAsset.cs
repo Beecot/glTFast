@@ -124,7 +124,6 @@ namespace GLTFast
                 {
                     Error = true;
                     ErrorMessage = "File could not be loaded";
-                    Debug.LogError("Cannot load file " + url);
                 }
             }
         }

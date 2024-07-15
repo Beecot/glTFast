@@ -1,6 +1,7 @@
 // SPDX-FileCopyrightText: 2023 Unity Technologies and the glTFast authors
 // SPDX-License-Identifier: Apache-2.0
 
+using System;
 using System.IO;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -61,6 +62,16 @@ namespace GLTFast
             set => instantiationSettings = value;
         }
 
+        /// <summary>
+        /// If true, there was an error during load of the glb.
+        /// </summary
+        public bool Error { get; private set; }
+
+        /// <summary>
+        /// If <see cref="Error"/> is true, this can contain an additional error message.
+        /// </summary
+        public string ErrorMessage { get; private set; }
+
         [SerializeField]
         [Tooltip("URL to load the glTF from. Loading local file paths works by prefixing them with \"file://\"")]
         string url;
@@ -104,8 +115,16 @@ namespace GLTFast
         {
             if (loadOnStartup && !string.IsNullOrEmpty(url))
             {
-                // Automatic load on startup
-                await Load(FullUrl);
+                try
+                {
+                    // Automatic load on startup
+                    Error = !(await Load(FullUrl));
+                }
+                catch (NullReferenceException e)
+                {
+                    Error = true;
+                    ErrorMessage = e.Message;
+                }
             }
         }
 
